@@ -60,23 +60,35 @@
       margin-bottom: 0.15rem;
     }
 
-    .alias-value {
+    /* Contenedor del input + botón */
+    .alias-input-wrapper {
+      position: relative;
+      width: 100%;
+      margin-bottom: 0.35rem;
+    }
+
+    .alias-input {
+      width: 100%;
       font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas,
         "Liberation Mono", "Courier New", monospace;
       font-size: 0.95rem;
       background: #f3f4f6;
-      padding: 0.45rem 0.6rem;
+      padding: 0.45rem 2.4rem 0.45rem 0.6rem; /* espacio a la derecha para el botón */
       border-radius: 8px;
-      display: inline-block;
-      word-break: break-word;
-      margin-bottom: 0.35rem;
+      border: none;
+      outline: none;
+      color: #111827;
+    }
+
+    .alias-input:focus {
+      box-shadow: 0 0 0 2px #f97316;
+      background: #eef0f4;
     }
 
     button {
       font-size: 0.8rem;
       border-radius: 999px;
       border: none;
-      padding: 0.35rem 0.9rem;
       cursor: pointer;
       background: #f97316;
       color: white;
@@ -90,6 +102,21 @@
       transform: translateY(1px) scale(0.98);
       box-shadow: 0 3px 8px rgba(249, 115, 22, 0.5);
       background: #ea580c;
+    }
+
+    /* Botón dentro del input, a la derecha */
+    .copy-btn {
+      position: absolute;
+      top: 50%;
+      right: 6px;
+      transform: translateY(-50%);
+      width: 2rem;
+      height: 2rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      padding: 0;
     }
 
     .notice {
@@ -108,29 +135,69 @@
     <div class="alias-list">
       <div class="alias-item">
         <div class="alias-label">Mercado Pago</div>
-        <div class="alias-value" id="alias-mp">gotica-culona-vez</div>
-        <button onclick="copyAlias('alias-mp')">Copiar alias</button>
+        <div class="alias-input-wrapper">
+          <input
+            class="alias-input"
+            id="alias-mp"
+            type="text"
+            value="gotica-culona-vez"
+            readonly
+          />
+          <button
+            class="copy-btn"
+            onclick="copyAlias('alias-mp')"
+            aria-label="Copiar alias de Mercado Pago"
+          >
+            📋
+          </button>
+        </div>
       </div>
 
       <div class="alias-item">
         <div class="alias-label">UALA</div>
-        <div class="alias-value" id="alias-uala">CASERO.DIFUSO.ENTERO</div>
-        <button onclick="copyAlias('alias-uala')">Copiar alias</button>
+        <div class="alias-input-wrapper">
+          <input
+            class="alias-input"
+            id="alias-uala"
+            type="text"
+            value="CASERO.DIFUSO.ENTERO"
+            readonly
+          />
+          <button
+            class="copy-btn"
+            onclick="copyAlias('alias-uala')"
+            aria-label="Copiar alias de Ualá"
+          >
+            📋
+          </button>
+        </div>
       </div>
 
       <div class="alias-item">
         <div class="alias-label">Banco Patagonia</div>
-        <div class="alias-value" id="alias-patagonia">
-          CODO.NEXO.SERIO
+        <div class="alias-input-wrapper">
+          <input
+            class="alias-input"
+            id="alias-patagonia"
+            type="text"
+            value="CODO.NEXO.SERIO"
+            readonly
+          />
+          <button
+            class="copy-btn"
+            onclick="copyAlias('alias-patagonia')"
+            aria-label="Copiar alias de Banco Patagonia"
+          >
+            📋
+          </button>
         </div>
-        <button onclick="copyAlias('alias-patagonia')">Copiar alias</button>
       </div>
     </div>
 
     <p class="notice">
       Al abrir esta página intentamos copiar automáticamente el alias de
-      Mercado Pago. Si tu navegador no lo permite, podés usar el botón
-      “Copiar alias”.
+      Mercado Pago. Si tu navegador no lo permite, podés usar el botón con el
+      icono 📋.
     </p>
   </div>
 
@@ -156,7 +223,14 @@
     function copyAlias(id) {
       const el = document.getElementById(id);
       if (!el) return;
-      const text = el.textContent.trim();
+
+      let text = "";
+      if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+        text = el.value;
+      } else {
+        text = el.textContent.trim();
+      }
+
       copyText(text);
     }
 
